@@ -78,3 +78,7 @@ Response: `{ access_token, user: { id, name, email } }`
 - React frontend banao jo `expense-tracker-mockup.html` wireframe follow kare
 - Login/Register screens `/auth/login` aur `/auth/register` se connect karo
 - Dashboard `/expenses/summary`, list `/expenses`, reports `/expenses/reports/category` se connect karo
+
+
+## Git Workflow
+This project follows feature-branch + pull request workflow.
