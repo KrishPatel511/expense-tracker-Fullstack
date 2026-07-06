@@ -1,0 +1,39 @@
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterFaceDto } from './dto/register-face.dto';
+import { FaceLoginDto } from './dto/face-login.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private authService: AuthService) {}
+
+  @Post('register')
+  register(@Body() dto: RegisterDto) {
+    return this.authService.register(dto);
+  }
+
+  @Post('login')
+  login(@Body() dto: LoginDto) {
+    return this.authService.login(dto);
+  }
+
+  // Logged-in user apna chehra register karta hai - isliye JWT guard lagा hai
+  @UseGuards(JwtAuthGuard)
+  @Post('face/register')
+  registerFace(
+    @CurrentUser() user: { userId: string },
+    @Body() dto: RegisterFaceDto,
+  ) {
+    return this.authService.registerFace(user.userId, dto);
+  }
+
+  // Face se login - abhi tak koi token nahi hai, isliye public route (normal login jaisa)
+  @Post('face/login')
+  loginWithFace(@Body() dto: FaceLoginDto) {
+    return this.authService.loginWithFace(dto);
+  }
+}
