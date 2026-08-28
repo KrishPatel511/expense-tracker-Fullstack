@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Expense Tracker - UI Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14213D;
+    --navy-light:#1E2E54;
+    --bg:#F3F4F9;
+    --panel:#FFFFFF;
+    --text:#1B1D28;
+    --muted:#8A8DA0;
+    --border:#E7E8F1;
+
+    --coral:#F2545B;
+    --gold:#E8A33D;
+    --purple:#7C5CFC;
+    --teal:#1FAE7E;
+
+    --coral-bg:#FDECEC;
+    --gold-bg:#FDF3E3;
+    --purple-bg:#F1EDFF;
+    --teal-bg:#E7F8F0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+  }
+  h1,h2,h3,.brand,.nav-links button{font-family:'Space Grotesk',sans-serif;}
+  .amount, .mono{font-family:'JetBrains Mono',monospace; font-weight:600;}
+
+  .topbar{
+    background:var(--navy);
+    color:#fff;
+    padding:12px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:50;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+  }
+  .topbar .title{font-weight:700; font-size:15px; display:flex; align-items:center; gap:8px;}
+  .topbar .title .dot{width:8px;height:8px;border-radius:50%; background:var(--teal);}
+  .nav-links{display:flex; gap:6px; flex-wrap:wrap;}
+  .nav-links button{
+    background:transparent;
+    color:#B9C0DE;
+    border:none;
+    padding:8px 14px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    border-radius:8px;
+    transition:all .15s;
+  }
+  .nav-links button:hover{background:var(--navy-light); color:#fff;}
+  .nav-links button.active{background:var(--teal); color:#fff;}
+
+  .screen{display:none; max-width:1180px; margin:26px auto 60px; padding:0 20px;}
+  .screen.active{display:block;}
+
+  /* ---- AUTH ---- */
+  .auth-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:70vh;
+  }
+  .auth-card{
+    width:380px;
+    background:var(--panel);
+    border-radius:18px;
+    padding:36px 34px;
+    box-shadow:0 10px 40px rgba(20,33,61,0.10);
+    border:1px solid var(--border);
+  }
+  .auth-logo{
+    width:46px;height:46px;border-radius:12px;
+    background:linear-gradient(135deg,var(--teal),var(--purple));
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px; color:#fff; margin-bottom:16px;
+  }
+  .auth-card h2{margin:0 0 4px; font-size:22px;}
+  .auth-card .sub{color:var(--muted); font-size:13px; margin-bottom:24px;}
+  .field-label{font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.4px;}
+  .field{
+    width:100%;
+    padding:12px 14px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    font-size:14px;
+    margin-bottom:18px;
+    color:var(--text);
+    background:#FBFBFE;
+  }
+  .field::placeholder{color:#B4B6C6;}
+  .btn-primary{
+    width:100%;
+    padding:13px;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    text-align:center;
+    transition:background .15s;
+  }
+  .btn-primary:hover{background:var(--navy-light);}
+  .auth-footer{text-align:center; margin-top:18px; font-size:13px; color:var(--muted);}
+  .link{color:var(--purple); font-weight:600; cursor:pointer; text-decoration:none;}
+
+  /* ---- APP SHELL ---- */
+  .app-shell{display:flex; gap:0; min-height:75vh; background:var(--panel); border-radius:18px; overflow:hidden; box-shadow:0 10px 40px rgba(20,33,61,0.08); border:1px solid var(--border);}
+  .sidebar{
+    width:220px;
+    background:var(--navy);
+    padding:22px 0;
+    flex-shrink:0;
+  }
+  .sidebar .brand{
+    color:#fff; font-weight:700; font-size:16px;
+    padding:0 22px 20px;
+    display:flex; align-items:center; gap:8px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    margin-bottom:12px;
+  }
+  .side-item{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 22px;
+    color:#9EA6C6;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    border-left:3px solid transparent;
+  }
+  .side-item svg{opacity:0.85; flex-shrink:0;}
+  .side-item.active{
+    background:var(--navy-light);
+    color:#fff;
+    border-left:3px solid var(--teal);
+  }
+  .side-item:hover{color:#fff; background:rgba(255,255,255,0.04);}
+  .main-area{flex:1; padding:26px 30px; min-width:0;}
+
+  .topline{display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;}
+  .topline h2{margin:0; font-size:21px;}
+  .topline .sub-text{color:var(--muted); font-size:13px; margin-top:2px;}
+  .avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:linear-gradient(135deg,var(--purple),var(--coral));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff; font-weight:700; font-size:13px;
+  }
+
+  .summary-cards{display:flex; gap:16px; margin-bottom:20px;}
+  .summary-card{
+    flex:1;
+    background:#FBFBFE;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px;
+  }
+  .summary-card .icon-badge{
+    width:34px;height:34px; border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:12px; font-size:16px;
+  }
+  .summary-card .label{font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.3px;}
+  .summary-card .value{font-size:22px; margin-top:4px;}
+
+  .charts-row{display:flex; gap:16px; margin-bottom:20px;}
+  .chart-card{
+    flex:1;
+    background:#FBFBFE;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+  }
+  .chart-card .chart-title{font-size:13px; font-weight:700; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;}
+  .chart-card .chart-title .tag{font-size:11px; color:var(--muted); font-weight:500;}
+
+  .donut-wrap{display:flex; align-items:center; gap:20px;}
+  .donut{
+    width:130px;height:130px;border-radius:50%;
+    background: conic-gradient(
+      var(--coral) 0% 34%,
+      var(--gold) 34% 55%,
+      var(--purple) 55% 80%,
+      var(--teal) 80% 100%
+    );
+    position:relative;
+    flex-shrink:0;
+  }
+  .donut::after{
+    content:'';
+    position:absolute; top:20px; left:20px; right:20px; bottom:20px;
+    background:#FBFBFE; border-radius:50%;
+  }
+  .legend{display:flex; flex-direction:column; gap:9px;}
+  .legend-item{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); font-weight:500;}
+  .legend-dot{width:9px; height:9px; border-radius:50%;}
+
+  .bars{display:flex; align-items:flex-end; gap:14px; height:150px; padding-top:10px;}
+  .bar-col{display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;}
+  .bar{width:100%; border-radius:6px 6px 0 0; background:linear-gradient(180deg,var(--purple),#B7A6FF);}
+  .bar-label{font-size:11px; color:var(--muted);}
+
+  .panel-card{
+    background:#FBFBFE;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+  }
+  .panel-title{font-size:14px; font-weight:700; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;}
+
+  table.data-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.data-table th{
+    text-align:left; padding:10px 12px; font-size:11px; color:var(--muted);
+    text-transform:uppercase; letter-spacing:0.4px; font-weight:700;
+    border-bottom:1.5px solid var(--border);
+  }
+  table.data-table td{padding:12px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  table.data-table tr:last-child td{border-bottom:none;}
+  table.data-table tr:hover td{background:#F6F6FC;}
+
+  .cat-chip{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600;}
+  .cat-dot{width:7px;height:7px;border-radius:50%;}
+
+  .row-actions{display:flex; gap:8px;}
+  .action-btn{
+    border:1px solid var(--border); background:#fff; padding:5px 10px;
+    border-radius:7px; font-size:11px; font-weight:600; cursor:pointer; color:var(--muted);
+  }
+  .action-btn.edit:hover{border-color:var(--purple); color:var(--purple);}
+  .action-btn.del:hover{border-color:var(--coral); color:var(--coral);}
+
+  .filter-row{display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .filter-row .field{margin-bottom:0; flex:1; min-width:140px; padding:10px 14px;}
+  .btn-outline{
+    padding:10px 18px; border-radius:10px; border:1.5px solid var(--border);
+    background:#fff; font-weight:600; font-size:13px; cursor:pointer; color:var(--text);
+  }
+  .btn-outline:hover{border-color:var(--navy);}
+
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px 20px;}
+  .full-span{grid-column:1 / -1;}
+
+  .btn-add{
+    background:var(--teal); color:#fff; border:none; padding:10px 18px;
+    border-radius:10px; font-weight:700; font-size:13px; cursor:pointer;
+    display:flex; align-items:center; gap:6px;
+  }
+  .btn-add:hover{background:#178E67;}
+
+  .fab{
+    position:fixed; bottom:26px; right:26px;
+    width:54px;height:54px;border-radius:50%;
+    background:var(--teal); color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px; cursor:pointer; box-shadow:0 8px 24px rgba(31,174,126,0.4);
+  }
+
+  .hint{text-align:center; color:#B4B6C6; font-size:12px; margin:20px 0 40px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title"><span class="dot"></span> ExpenseTrack</div>
+  <div class="nav-links">
+    <button onclick="showScreen('login')" id="nav-login">Login</button>
+    <button onclick="showScreen('register')" id="nav-register">Register</button>
+    <button onclick="showScreen('dashboard')" id="nav-dashboard">Dashboard</button>
+    <button onclick="showScreen('add')" id="nav-add">Add Expense</button>
+    <button onclick="showScreen('list')" id="nav-list">Expense List</button>
+    <button onclick="showScreen('reports')" id="nav-reports">Reports</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="screen active" id="screen-login">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">₹</div>
+      <h2>Welcome back</h2>
+      <div class="sub">Log in to track your spending</div>
+      <div class="field-label">Email</div>
+      <input class="field" placeholder="krish@example.com">
+      <div class="field-label">Password</div>
+      <input class="field" placeholder="••••••••" type="password">
+      <div class="btn-primary" onclick="showScreen('dashboard')">Log In</div>
+      <div class="auth-footer">New here? <span class="link" onclick="showScreen('register')">Create an account</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="screen" id="screen-register">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">₹</div>
+      <h2>Create your account</h2>
+      <div class="sub">Start tracking expenses in minutes</div>
+      <div class="field-label">Full Name</div>
+      <input class="field" placeholder="Krish Patel">
+      <div class="field-label">Email</div>
+      <input class="field" placeholder="krish@example.com">
+      <div class="field-label">Password</div>
+      <input class="field" placeholder="••••••••" type="password">
+      <div class="btn-primary" onclick="showScreen('login')">Create Account</div>
+      <div class="auth-footer">Already have an account? <span class="link" onclick="showScreen('login')">Log in</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="screen-dashboard">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="brand">💰 ExpenseTrack</div>
+      <div class="side-item active" onclick="showScreen('dashboard')">🏠 &nbsp;Dashboard</div>
+      <div class="side-item" onclick="showScreen('add')">➕ &nbsp;Add Expense</div>
+      <div class="side-item" onclick="showScreen('list')">📄 &nbsp;All Expenses</div>
+      <div class="side-item" onclick="showScreen('reports')">📈 &nbsp;Reports</div>
+      <div class="side-item" onclick="showScreen('login')">🚪 &nbsp;Logout</div>
+    </div>
+    <div class="main-area">
+      <div class="topline">
+        <div>
+          <h2>Good evening, Krish 👋</h2>
+          <div class="sub-text">Here's what's happening with your money</div>
+        </div>
+        <div class="avatar">KP</div>
+      </div>
+
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="icon-badge" style="background:var(--coral-bg); color:var(--coral);">💸</div>
+          <div class="label">Total Spent (June)</div>
+          <div class="value amount">₹24,500</div>
+        </div>
+        <div class="summary-card">
+          <div class="icon-badge" style="background:var(--purple-bg); color:var(--purple);">🧾</div>
+          <div class="label">Transactions</div>
+          <div class="value amount">37</div>
+        </div>
+        <div class="summary-card">
+          <div class="icon-badge" style="background:var(--teal-bg); color:var(--teal);">🏆</div>
+          <div class="label">Top Category</div>
+          <div class="value">Food</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Category Breakdown <span class="tag">This month</span></div>
+          <div class="donut-wrap">
+            <div class="donut"></div>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--coral)"></span>Food — 34%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span>Travel — 21%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span>Bills — 25%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--teal)"></span>Shopping — 20%</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Monthly Trend <span class="tag">Jan – Jun</span></div>
+          <div class="bars">
+            <div class="bar-col"><div class="bar" style="height:60%"></div><div class="bar-label">Jan</div></div>
+            <div class="bar-col"><div class="bar" style="height:80%"></div><div class="bar-label">Feb</div></div>
+            <div class="bar-col"><div class="bar" style="height:40%"></div><div class="bar-label">Mar</div></div>
+            <div class="bar-col"><div class="bar" style="height:95%; background:linear-gradient(180deg,var(--teal),#7CE4BE);"></div><div class="bar-label">Apr</div></div>
+            <div class="bar-col"><div class="bar" style="height:55%"></div><div class="bar-label">May</div></div>
+            <div class="bar-col"><div class="bar" style="height:70%"></div><div class="bar-label">Jun</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-title">Recent Expenses <span class="link" onclick="showScreen('list')">View all →</span></div>
+        <table class="data-table">
+          <tr><th>Title</th><th>Category</th><th>Date</th><th>Amount</th></tr>
+          <tr><td>Grocery Shopping</td><td><span class="cat-chip" style="background:var(--coral-bg); color:var(--coral);"><span class="cat-dot" style="background:var(--coral)"></span>Food</span></td><td>28 Jun</td><td class="amount">₹1,200</td></tr>
+          <tr><td>Uber Ride</td><td><span class="cat-chip" style="background:var(--gold-bg); color:var(--gold);"><span class="cat-dot" style="background:var(--gold)"></span>Travel</span></td><td>27 Jun</td><td class="amount">₹350</td></tr>
+          <tr><td>Electricity Bill</td><td><span class="cat-chip" style="background:var(--purple-bg); color:var(--purple);"><span class="cat-dot" style="background:var(--purple)"></span>Bills</span></td><td>25 Jun</td><td class="amount">₹2,100</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="fab" onclick="showScreen('add')">＋</div>
+  </div>
+</div>
+
+<!-- ADD EXPENSE -->
+<div class="screen" id="screen-add">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="brand">💰 ExpenseTrack</div>
+      <div class="side-item" onclick="showScreen('dashboard')">🏠 &nbsp;Dashboard</div>
+      <div class="side-item active" onclick="showScreen('add')">➕ &nbsp;Add Expense</div>
+      <div class="side-item" onclick="showScreen('list')">📄 &nbsp;All Expenses</div>
+      <div class="side-item" onclick="showScreen('reports')">📈 &nbsp;Reports</div>
+      <div class="side-item" onclick="showScreen('login')">🚪 &nbsp;Logout</div>
+    </div>
+    <div class="main-area">
+      <div class="topline"><div><h2>Add New Expense</h2><div class="sub-text">Log a purchase or bill</div></div></div>
+      <div class="panel-card">
+        <div class="form-grid">
+          <div>
+            <div class="field-label">Title</div>
+            <input class="field" placeholder="e.g. Grocery Shopping" style="margin-bottom:0;">
+          </div>
+          <div>
+            <div class="field-label">Amount (₹)</div>
+            <input class="field" placeholder="0.00" style="margin-bottom:0;">
+          </div>
+          <div>
+            <div class="field-label">Category</div>
+            <select class="field" style="margin-bottom:0;">
+              <option>Food</option><option>Travel</option><option>Bills</option><option>Shopping</option>
+            </select>
+          </div>
+          <div>
+            <div class="field-label">Date</div>
+            <input class="field" placeholder="DD / MM / YYYY" style="margin-bottom:0;">
+          </div>
+          <div class="full-span">
+            <div class="field-label">Note (optional)</div>
+            <input class="field" placeholder="Add a short note..." style="margin-bottom:0;">
+          </div>
+          <div class="full-span" style="display:flex; gap:12px; margin-top:6px;">
+            <div class="btn-primary" style="width:auto; padding:12px 26px;" onclick="showScreen('list')">Save Expense</div>
+            <div class="btn-outline" onclick="showScreen('dashboard')">Cancel</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPENSE LIST -->
+<div class="screen" id="screen-list">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="brand">💰 ExpenseTrack</div>
+      <div class="side-item" onclick="showScreen('dashboard')">🏠 &nbsp;Dashboard</div>
+      <div class="side-item" onclick="showScreen('add')">➕ &nbsp;Add Expense</div>
+      <div class="side-item active" onclick="showScreen('list')">📄 &nbsp;All Expenses</div>
+      <div class="side-item" onclick="showScreen('reports')">📈 &nbsp;Reports</div>
+      <div class="side-item" onclick="showScreen('login')">🚪 &nbsp;Logout</div>
+    </div>
+    <div class="main-area">
+      <div class="topline">
+        <div><h2>All Expenses</h2><div class="sub-text">37 transactions this month</div></div>
+        <div class="btn-add" onclick="showScreen('add')">＋ Add New</div>
+      </div>
+
+      <div class="filter-row">
+        <select class="field"><option>All Categories</option><option>Food</option><option>Travel</option><option>Bills</option><option>Shopping</option></select>
+        <input class="field" placeholder="From Date">
+        <input class="field" placeholder="To Date">
+        <div class="btn-outline">Apply Filter</div>
+      </div>
+
+      <div class="panel-card">
+        <table class="data-table">
+          <tr><th>Title</th><th>Category</th><th>Date</th><th>Amount</th><th>Actions</th></tr>
+          <tr>
+            <td>Grocery Shopping</td><td><span class="cat-chip" style="background:var(--coral-bg); color:var(--coral);"><span class="cat-dot" style="background:var(--coral)"></span>Food</span></td><td>28 Jun 2026</td><td class="amount">₹1,200</td>
+            <td class="row-actions"><span class="action-btn edit" onclick="showScreen('add')">Edit</span><span class="action-btn del">Delete</span></td>
+          </tr>
+          <tr>
+            <td>Uber Ride</td><td><span class="cat-chip" style="background:var(--gold-bg); color:var(--gold);"><span class="cat-dot" style="background:var(--gold)"></span>Travel</span></td><td>27 Jun 2026</td><td class="amount">₹350</td>
+            <td class="row-actions"><span class="action-btn edit" onclick="showScreen('add')">Edit</span><span class="action-btn del">Delete</span></td>
+          </tr>
+          <tr>
+            <td>Electricity Bill</td><td><span class="cat-chip" style="background:var(--purple-bg); color:var(--purple);"><span class="cat-dot" style="background:var(--purple)"></span>Bills</span></td><td>25 Jun 2026</td><td class="amount">₹2,100</td>
+            <td class="row-actions"><span class="action-btn edit" onclick="showScreen('add')">Edit</span><span class="action-btn del">Delete</span></td>
+          </tr>
+          <tr>
+            <td>Movie Tickets</td><td><span class="cat-chip" style="background:var(--teal-bg); color:var(--teal);"><span class="cat-dot" style="background:var(--teal)"></span>Shopping</span></td><td>22 Jun 2026</td><td class="amount">₹800</td>
+            <td class="row-actions"><span class="action-btn edit" onclick="showScreen('add')">Edit</span><span class="action-btn del">Delete</span></td>
+          </tr>
+          <tr>
+            <td>Mobile Recharge</td><td><span class="cat-chip" style="background:var(--purple-bg); color:var(--purple);"><span class="cat-dot" style="background:var(--purple)"></span>Bills</span></td><td>20 Jun 2026</td><td class="amount">₹499</td>
+            <td class="row-actions"><span class="action-btn edit" onclick="showScreen('add')">Edit</span><span class="action-btn del">Delete</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORTS -->
+<div class="screen" id="screen-reports">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="brand">💰 ExpenseTrack</div>
+      <div class="side-item" onclick="showScreen('dashboard')">🏠 &nbsp;Dashboard</div>
+      <div class="side-item" onclick="showScreen('add')">➕ &nbsp;Add Expense</div>
+      <div class="side-item" onclick="showScreen('list')">📄 &nbsp;All Expenses</div>
+      <div class="side-item active" onclick="showScreen('reports')">📈 &nbsp;Reports</div>
+      <div class="side-item" onclick="showScreen('login')">🚪 &nbsp;Logout</div>
+    </div>
+    <div class="main-area">
+      <div class="topline">
+        <div><h2>Monthly Reports</h2><div class="sub-text">Aggregated from your expense data</div></div>
+        <select class="field" style="width:auto; margin-bottom:0;"><option>June 2026</option><option>May 2026</option></select>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Category Breakdown</div>
+          <div class="donut-wrap">
+            <div class="donut"></div>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--coral)"></span>Food</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span>Travel</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span>Bills</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--teal)"></span>Shopping</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Daily Spend Trend</div>
+          <div class="bars">
+            <div class="bar-col"><div class="bar" style="height:30%"></div><div class="bar-label">Wk1</div></div>
+            <div class="bar-col"><div class="bar" style="height:50%"></div><div class="bar-label">Wk2</div></div>
+            <div class="bar-col"><div class="bar" style="height:45%"></div><div class="bar-label">Wk3</div></div>
+            <div class="bar-col"><div class="bar" style="height:90%; background:linear-gradient(180deg,var(--teal),#7CE4BE);"></div><div class="bar-label">Wk4</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-title">Category-wise Totals <span class="tag" style="color:var(--muted); font-size:12px; font-weight:500;">via MongoDB Aggregation</span></div>
+        <table class="data-table">
+          <tr><th>Category</th><th>Total Amount</th><th>Transactions</th></tr>
+          <tr><td><span class="cat-chip" style="background:var(--coral-bg); color:var(--coral);"><span class="cat-dot" style="background:var(--coral)"></span>Food</span></td><td class="amount">₹8,400</td><td>12</td></tr>
+          <tr><td><span class="cat-chip" style="background:var(--gold-bg); color:var(--gold);"><span class="cat-dot" style="background:var(--gold)"></span>Travel</span></td><td class="amount">₹5,200</td><td>9</td></tr>
+          <tr><td><span class="cat-chip" style="background:var(--purple-bg); color:var(--purple);"><span class="cat-dot" style="background:var(--purple)"></span>Bills</span></td><td class="amount">₹6,900</td><td>6</td></tr>
+          <tr><td><span class="cat-chip" style="background:var(--teal-bg); color:var(--teal);"><span class="cat-dot" style="background:var(--teal)"></span>Shopping</span></td><td class="amount">₹4,000</td><td>10</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hint">Click any nav button, sidebar link, or table action to jump between screens.</div>
+
+<script>
+  const screens = ['login','register','dashboard','add','list','reports'];
+  function showScreen(name){
+    screens.forEach(s => {
+      document.getElementById('screen-'+s).classList.remove('active');
+      document.getElementById('nav-'+s).classList.remove('active');
+    });
+    document.getElementById('screen-'+name).classList.add('active');
+    document.getElementById('nav-'+name).classList.add('active');
+    window.scrollTo(0,0);
+  }
+</script>
+
+</body>
+</html>
